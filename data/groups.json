@@ -1,0 +1,154 @@
+[
+  {
+    "id": "akb_kami7",
+    "name": "AKB48 神7",
+    "members": [
+      "1a",
+      "1b",
+      "1c",
+      "1d",
+      "1e",
+      "1f",
+      "1g",
+      "1h",
+      "1i"
+    ],
+    "enabled_default": true
+  },
+  {
+    "id": "dansei_general",
+    "name": "男性アイドル (関ジャニ・嵐ほか)",
+    "members": [
+      "2a",
+      "2b",
+      "2c",
+      "2d",
+      "2e",
+      "2f",
+      "2g",
+      "2h",
+      "2i"
+    ],
+    "enabled_default": false
+  },
+  {
+    "id": "joshi_koukousei_2018",
+    "name": "高校生版 2018",
+    "members": [
+      "3a",
+      "3b",
+      "3c",
+      "3d",
+      "3e"
+    ],
+    "enabled_default": false
+  },
+  {
+    "id": "josei_2019",
+    "name": "女性アイドル 2019",
+    "members": [
+      "1a",
+      "1c",
+      "3b",
+      "3c",
+      "4a",
+      "4b"
+    ],
+    "enabled_default": false
+  },
+  {
+    "id": "king_and_prince",
+    "name": "King & Prince",
+    "members": [
+      "5a",
+      "5b",
+      "5c",
+      "5d",
+      "5e"
+    ],
+    "enabled_default": false
+  },
+  {
+    "id": "niziu",
+    "name": "NiziU",
+    "members": [
+      "6a",
+      "6b",
+      "6c",
+      "6d",
+      "6e",
+      "6f",
+      "6g",
+      "6h",
+      "6i"
+    ],
+    "enabled_default": true
+  },
+  {
+    "id": "dansei_1980",
+    "name": "1980年代男性アイドル",
+    "members": [
+      "7a",
+      "7b",
+      "7c",
+      "7d",
+      "7e"
+    ],
+    "enabled_default": true
+  },
+  {
+    "id": "josei_1980",
+    "name": "1980年代女性アイドル",
+    "members": [
+      "8a",
+      "8b",
+      "8c",
+      "8d",
+      "8e"
+    ],
+    "enabled_default": false
+  },
+  {
+    "id": "bts",
+    "name": "BTS",
+    "members": [
+      "9a",
+      "9b",
+      "9c",
+      "9d",
+      "9e",
+      "9f",
+      "9g"
+    ],
+    "enabled_default": true
+  },
+  {
+    "id": "twice",
+    "name": "TWICE Top6",
+    "members": [
+      "10a",
+      "10b",
+      "10c",
+      "10d",
+      "10e",
+      "10f"
+    ],
+    "enabled_default": true
+  },
+  {
+    "id": "snow_man",
+    "name": "Snow Man",
+    "members": [
+      "11a",
+      "11b",
+      "11c",
+      "11d",
+      "11e",
+      "11f",
+      "11g",
+      "11h",
+      "11i"
+    ],
+    "enabled_default": true
+  }
+]

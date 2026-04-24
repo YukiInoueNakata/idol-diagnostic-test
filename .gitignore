@@ -1,0 +1,28 @@
+# OCR キャッシュ (大きくなりうる．成果物は idols.json に取り込まれるので不要)
+tools/.ocr_cache.json
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+*.egg-info/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+
+# 作業中の一時ファイル
+*.tmp
+*~
+
+# clasp (スクリプトプロジェクトの紐付け情報．ローカル専用)
+gas/.clasp.json
+# clasp が作成しうる実行時ファイル
+gas/.clasprc.json
+
+# 作業ログ (ローカル．必要に応じて追加)
+# docs/work-log/

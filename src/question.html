@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>診断テスト — 質問</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<main class="container">
+  <h1 id="setName">…</h1>
+  <p id="instructions" class="lead"></p>
+
+  <form id="qForm">
+    <div id="items"></div>
+    <div class="actions">
+      <a href="./index.html" class="link-btn">戻る</a>
+      <button type="submit" class="primary-btn">結果を見る</button>
+    </div>
+  </form>
+</main>
+
+<script type="module">
+import { loadSession, saveSession, fetchJson } from "./app.js";
+import { computeBig5 } from "./scoring.js";
+
+const sess = loadSession();
+if (!sess.questionSetId || !sess.groupId) {
+  location.href = "./index.html";
+}
+
+const qset = await fetchJson(`../data/question-sets/${sess.questionSetId}.json`);
+document.getElementById("setName").textContent = qset.name;
+document.getElementById("instructions").textContent = qset.instructions;
+
+const itemsDiv = document.getElementById("items");
+const labels = qset.scale.labels;
+
+for (let i = 0; i < qset.items.length; i++) {
+  const item = qset.items[i];
+  const radios = labels.map((lab, idx) => {
+    const v = qset.scale.min + idx;
+    return `<label class="scale-choice">
+      <input type="radio" name="${item.id}" value="${v}" required>
+      <span class="scale-num">${v}</span>
+      <span class="scale-label">${lab}</span>
+    </label>`;
+  }).join("");
+
+  itemsDiv.insertAdjacentHTML("beforeend", `
+    <div class="question-block">
+      <div class="qnum">Q${i + 1}</div>
+      <div class="qtext">${item.text}</div>
+      <div class="scale-choices">${radios}</div>
+    </div>`);
+}
+
+document.getElementById("qForm").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  const answers = {};
+  for (const item of qset.items) {
+    answers[item.id] = Number(fd.get(item.id));
+  }
+  const big5 = computeBig5(qset, answers);
+  saveSession({ answers, big5, finishedAt: new Date().toISOString() });
+  location.href = "./result.html";
+});
+</script>
+</body>
+</html>

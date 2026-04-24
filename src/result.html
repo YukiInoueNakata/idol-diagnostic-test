@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>診断結果</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="./style.css">
+<link rel="stylesheet" href="./print.css" media="print">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<main class="container result-container">
+  <div class="result-card" id="resultCard">
+    <h1 id="headline">あなたは<span id="idolName">…</span>タイプです！！</h1>
+
+    <div class="result-body">
+      <div class="result-image-col">
+        <img id="idolImg" alt="">
+      </div>
+      <div class="result-desc-col">
+        <p id="idolDesc"></p>
+      </div>
+    </div>
+
+    <div class="chart-wrap">
+      <canvas id="radar" width="400" height="400"></canvas>
+    </div>
+
+    <p class="footnote">※ 本診断結果は娯楽目的で，実際の人物とは関係ありません．</p>
+  </div>
+
+  <div class="actions no-print">
+    <button id="printBtn" class="primary-btn">印刷して終了</button>
+    <button id="restartBtn" class="link-btn">印刷しないで終了</button>
+    <div id="submitStatus" class="submit-status"></div>
+  </div>
+</main>
+
+<script type="module">
+import { loadSession, clearSession, fetchJson, getPcName } from "./app.js";
+import { findNearest } from "./scoring.js";
+import { submitRecord, flushQueue } from "./api.js";
+
+const sess = loadSession();
+if (!sess.big5 || !sess.groupId) {
+  location.href = "./index.html";
+}
+
+const [idols, qset] = await Promise.all([
+  fetchJson("../data/idols.json"),
+  fetchJson(`../data/question-sets/${sess.questionSetId}.json`),
+]);
+
+const { idol } = findNearest(sess.big5, idols, sess.groupId);
+
+// 画面反映
+document.getElementById("idolName").textContent = idol.name ?? idol.id;
+document.getElementById("idolImg").src = `../images/idols/${idol.image}`;
+document.getElementById("idolDesc").textContent = idol.description || "（説明文は未登録です．data/idols.json を編集してください．）";
+
+// レーダーチャート
+const dimKeys = ["E", "A", "C", "N", "O"];
+const dimLabels = dimKeys.map((k) => qset.dimensions[k].label);
+new Chart(document.getElementById("radar"), {
+  type: "radar",
+  data: {
+    labels: dimLabels,
+    datasets: [
+      { label: "あなた",       data: dimKeys.map((k) => sess.big5[k]),   borderWidth: 2, fill: true, backgroundColor: "rgba(100,150,255,0.25)", borderColor: "rgba(100,150,255,1)" },
+      { label: idol.name ?? idol.id, data: dimKeys.map((k) => idol.big5[k]), borderWidth: 2, fill: true, backgroundColor: "rgba(255,120,150,0.25)", borderColor: "rgba(255,120,150,1)" },
+    ],
+  },
+  options: {
+    responsive: false,
+    scales: { r: { min: 1, max: 7, ticks: { stepSize: 1 } } },
+    plugins: { legend: { position: "bottom" } },
+  },
+});
+
+// 結果の送信
+const pcName = await getPcName();
+const record = {
+  timestamp: new Date().toISOString(),
+  pcName,
+  age: sess.age,
+  gender: sess.gender,
+  questionSetId: sess.questionSetId,
+  groupId: sess.groupId,
+  answers: sess.answers,
+  big5: sess.big5,
+  matchedId: idol.id,
+  matchedName: idol.name ?? idol.id,
+};
+const statusEl = document.getElementById("submitStatus");
+submitRecord(record).then((r) => {
+  statusEl.textContent = r.ok ? "記録送信済" : "オフライン: 送信はキューに保存しました";
+}).catch(() => {
+  statusEl.textContent = "送信失敗 (ローカル保存済)";
+});
+flushQueue();  // 過去の保留分があれば再送
+
+// ボタン
+document.getElementById("printBtn").addEventListener("click", () => {
+  window.print();
+});
+document.getElementById("restartBtn").addEventListener("click", () => {
+  clearSession();
+  location.href = "./index.html";
+});
+
+// 印刷後は自動でトップへ (印刷ダイアログのキャンセルにも対応)
+window.addEventListener("afterprint", () => {
+  clearSession();
+  location.href = "./index.html";
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+{
+  "id": "tipi-ja-10",
+  "name": "TIPI日本語版 (10問)",
+  "description": "Ten Item Personality Inventory 日本語版．Big Five 5次元を10項目で測定．所要時間およそ2〜3分．",
+  "instructions": "1から10までのことばがあなた自身にどのくらい当てはまるかについて，1から7までの数字のうち最も適切なものを選んでください．文章全体を総合的に見て，自分にどれだけ当てはまるかを評価してください．",
+  "scale": {
+    "min": 1,
+    "max": 7,
+    "labels": [
+      "全く違うと思う",
+      "おおよそ違うと思う",
+      "少し違うと思う",
+      "どちらでもない",
+      "少しそう思う",
+      "まあまあそう思う",
+      "強くそう思う"
+    ]
+  },
+  "items": [
+    { "id": "q1",  "text": "活発で，外向的だと思う",                    "dimension": "E", "reverse": false },
+    { "id": "q2",  "text": "他人に不満をもち，もめごとを起こしやすいと思う", "dimension": "A", "reverse": true  },
+    { "id": "q3",  "text": "しっかりしていて，自分に厳しいと思う",         "dimension": "C", "reverse": false },
+    { "id": "q4",  "text": "心配性で，うろたえやすいと思う",              "dimension": "N", "reverse": false },
+    { "id": "q5",  "text": "新しいことが好きで，変わった考えをもつと思う",  "dimension": "O", "reverse": false },
+    { "id": "q6",  "text": "ひかえめで，おとなしいと思う",                "dimension": "E", "reverse": true  },
+    { "id": "q7",  "text": "人に気をつかう，やさしい人間だと思う",         "dimension": "A", "reverse": false },
+    { "id": "q8",  "text": "だらしなく，うっかりしていると思う",           "dimension": "C", "reverse": true  },
+    { "id": "q9",  "text": "冷静で，気分が安定していると思う",             "dimension": "N", "reverse": true  },
+    { "id": "q10", "text": "発想力に欠けた，平凡な人間だと思う",            "dimension": "O", "reverse": true  }
+  ],
+  "aggregation": "mean_of_pair",
+  "output_scale": { "min": 1, "max": 7 },
+  "dimensions": {
+    "E": { "label": "外向性",     "short": "Extraversion"      },
+    "A": { "label": "協調性",     "short": "Agreeableness"     },
+    "C": { "label": "勤勉性",     "short": "Conscientiousness" },
+    "N": { "label": "神経症傾向", "short": "Neuroticism"       },
+    "O": { "label": "開放性",     "short": "Openness"          }
+  },
+  "source": "現行 アイドル診断テスト (2025年版) に埋め込まれていた10項目．小塩ほか(2012)のTIPI-Jに準拠．",
+  "default": true
+}

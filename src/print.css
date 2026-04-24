@@ -1,0 +1,45 @@
+/* 印刷用スタイル．@media print で適用される． */
+
+@page {
+  size: A4;
+  margin: 15mm 12mm;
+}
+
+body { background: #fff !important; }
+.no-print { display: none !important; }
+
+.container { max-width: none; padding: 0; margin: 0; }
+
+.result-card {
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  page-break-inside: avoid;
+}
+
+.result-card h1 {
+  font-size: 22pt;
+  margin-bottom: 10mm;
+}
+
+.result-body {
+  grid-template-columns: 60mm 1fr;
+  gap: 8mm;
+  margin-bottom: 8mm;
+}
+
+.result-image-col img {
+  max-width: 60mm;
+}
+
+.result-desc-col p {
+  font-size: 11pt;
+  line-height: 1.7;
+}
+
+.chart-wrap canvas {
+  width: 90mm !important;
+  height: 90mm !important;
+}
+
+.footnote { font-size: 9pt; }

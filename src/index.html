@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>アイドル診断テスト</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<main class="container">
+  <h1>アイドル診断テスト</h1>
+  <p class="lead">あなたの性格を10問の質問で診断し，似ているアイドルをお見せします．</p>
+
+  <form id="startForm">
+    <fieldset>
+      <legend>基本情報</legend>
+      <label class="row">
+        <span class="label">年齢</span>
+        <input type="number" name="age" min="5" max="120" required inputmode="numeric">
+      </label>
+      <label class="row">
+        <span class="label">性別</span>
+        <select name="gender" required>
+          <option value="">選択してください</option>
+          <option value="female">女性</option>
+          <option value="male">男性</option>
+          <option value="other">その他 / 無回答</option>
+        </select>
+      </label>
+    </fieldset>
+
+    <fieldset>
+      <legend>質問セット</legend>
+      <div id="questionSetContainer" class="choice-list"></div>
+    </fieldset>
+
+    <fieldset>
+      <legend>診断したいグループ</legend>
+      <div id="groupContainer" class="choice-list"></div>
+    </fieldset>
+
+    <button type="submit" class="primary-btn">診断を開始する</button>
+  </form>
+</main>
+
+<script type="module">
+import { saveSession, loadGroups, loadQuestionSets } from "./app.js";
+
+const qsContainer = document.getElementById("questionSetContainer");
+const grpContainer = document.getElementById("groupContainer");
+
+const [sets, groups] = await Promise.all([loadQuestionSets(), loadGroups()]);
+
+// 質問セット: デフォルトで default=true のものを選択
+for (const s of sets) {
+  const id = `qset-${s.id}`;
+  const checked = s.default ? "checked" : "";
+  qsContainer.insertAdjacentHTML("beforeend", `
+    <label class="radio-row">
+      <input type="radio" name="questionSetId" value="${s.id}" id="${id}" ${checked} required>
+      <span>
+        <strong>${s.name}</strong>
+        <small>${s.description ?? ""}</small>
+      </span>
+    </label>`);
+}
+
+// グループ: enabled_default=true のみ表示．無効グループは管理画面経由で有効化したい場合に備え全表示はしない
+const enabled = groups.filter((g) => g.enabled_default);
+for (const g of enabled) {
+  grpContainer.insertAdjacentHTML("beforeend", `
+    <label class="radio-row">
+      <input type="radio" name="groupId" value="${g.id}" required>
+      <span><strong>${g.name}</strong><small>${g.members.length}名</small></span>
+    </label>`);
+}
+if (enabled.length === 0) {
+  grpContainer.insertAdjacentHTML("beforeend",
+    `<p class="warning">enabled_default=true のグループがありません．data/groups.json を確認してください．</p>`);
+}
+
+document.getElementById("startForm").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  saveSession({
+    age: Number(fd.get("age")),
+    gender: fd.get("gender"),
+    questionSetId: fd.get("questionSetId"),
+    groupId: fd.get("groupId"),
+    startedAt: new Date().toISOString(),
+  });
+  location.href = "./question.html";
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+{
+  "gasEndpoint": "https://script.google.com/macros/s/AKfycbzUQwMeFYnhy8OBT7h7WZgs5exbpiXTwEoPZoMaWTyDIlOzB2kp5L7BmWKeOp4bs8u9/exec",
+  "pcName": "",
+  "comment_gasEndpoint": "Google Apps Script のウェブアプリURL．setup_gas.ps1 が自動更新する．",
+  "comment_pcName": "空なら navigator.userAgent からPC識別子を生成．会場運用で固有ラベルにしたい場合は手で設定．"
+}
